@@ -1,0 +1,29 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>LinkedIn Safety Analyzer</title>
+            <link rel="stylesheet" type="text/css" href="/static/styles.css">
+            <script>
+                async function analyzeText() {
+                    let text = document.getElementById("textInput").value;
+                    let response = await fetch("/analyze", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ text: text })
+                    });
+                    let result = await response.json();
+                    document.getElementById("result").innerText = JSON.stringify(result, null, 2);
+                }
+            </script>
+        </head>
+        <body>
+            <div class="container">
+                <h1>LinkedIn Safety Analyzer</h1>
+                <textarea id="textInput" rows="4" cols="50" placeholder="Enter text here..."></textarea><br>
+                <button onclick="analyzeText()">Analyze</button>
+                <pre id="result"></pre>
+            </div>
+        </body>
+        </html>
+        
