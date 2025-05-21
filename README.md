@@ -1,129 +1,141 @@
-# LinkedIn-ContentAnalysis
+# LinkedIn Content Safety Analysis
 
-# 🛡️ LinkedIn Content Analysis – Making LinkedIn Safer for Women
+A robust machine learning pipeline for analyzing and classifying content safety in LinkedIn posts using XGBoost and advanced NLP techniques.
 
-This project is focused on building a real-time **content moderation and analysis system** to detect and mitigate **gender-targeted harassment, microaggressions, and inappropriate content** on LinkedIn – with a focus on improving **safety and inclusivity for women** in professional spaces.
+## 🚀 Features
 
----
+- **Advanced Content Classification**: Utilizes XGBoost for high-accuracy content safety classification
+- **Real-time Processing**: Efficient pipeline for processing content in real-time
+- **Priority-based Queue**: Intelligent content prioritization based on safety scores
+- **Comprehensive Monitoring**: Built-in logging and monitoring system
+- **Model Persistence**: Save and load trained models for future use
+- **Type Safety**: Full type hints for better code maintainability
+- **Error Handling**: Robust error handling and logging throughout the pipeline
 
-## 🌐 Why This Matters
+## 🛠️ Technical Stack
 
-Women often face subtle and overt forms of **bias, inappropriate DMs, and unsafe interactions** on platforms like LinkedIn, where professionalism should be the standard. This tool aims to:
+- Python 3.8+
+- XGBoost for machine learning
+- scikit-learn for feature extraction and model evaluation
+- NumPy for numerical operations
+- TF-IDF Vectorization for text processing
+- Joblib for model persistence
 
-* Flag problematic content before it spreads.
-* Empower women with reporting and redressal options.
-* Help platforms and organizations **create safer digital communities**.
-
----
-
-## 🧠 What the System Does
-
-* Real-time content filtering of posts, comments, and private messages
-* Detects:
-
-  * **Toxicity & aggression**
-  * **Gendered language or slurs**
-  * **Harassment or suggestive remarks**
-  * **Subtle bias or gaslighting patterns**
-* Flags messages for moderation, alerting the user and/or platform
-
----
-
-## 🔧 Architecture Overview
-
-```
-+-----------------------------------------+
-|     LinkedIn Content Ingestion API      |
-+------------------+----------------------+
-                   |
-                   v
-+-----------------------------------------+
-|   Local LLM / Classification Pipeline   |
-|   (Zero-shot/offensive intent models)   |
-+------------------+----------------------+
-                   |
-                   v
-+------------------+----------------------+
-|     Rule Engine & Scoring System        |
-+------------------+----------------------+
-                   |
-                   v
-+------------------+----------------------+
-|   Dashboard + Admin Flagging System     |
-+-----------------------------------------+
-```
-
----
-
-## 🛠️ Features
-
-* **Local LLM support** (no user data sent to cloud)
-* Plug-and-play moderation API
-* **Real-time flagging & user alerts**
-* **Admin dashboard** for reporting & analytics
-* Customizable bias/threat thresholds
-
----
-
-## 📦 Installation
+## 📋 Prerequisites
 
 ```bash
-git clone https://github.com/yourusername/linkedin-safety-ai.git
-cd linkedin-safety-ai
 pip install -r requirements.txt
 ```
 
----
+## 🏗️ Installation
 
-## 💻 Example Usage
-
-```python
-from safety_checker import check_content
-
-text = "Hey cutie, you look too good to be just a dev 😉"
-result = check_content(text)
-print(result)  # {'flag': True, 'category': 'suggestive language', 'score': 0.87}
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/LinkedIn-ContentAnalysis.git
+cd LinkedIn-ContentAnalysis
 ```
 
----
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
 
-## 📈 Admin Dashboard (Web UI)
+## 💻 Usage
 
-* View flagged content
-* Review false positives/negatives
-* Track monthly safety scores
-* Export reports for company HR use
+### Basic Usage
 
----
+```python
+from main import ContentSafetyPipeline
 
-## 🔬 Model & NLP Stack
+# Initialize the pipeline
+pipeline = ContentSafetyPipeline()
 
-* SentenceTransformers / SBERT
-* Zero-shot intent detection (via LLM)
-* Custom toxicity classifier (Fine-tuned BERT or DistilBERT)
-* Regex & rules for edge cases (e.g. emojis + code words)
+# Train a new model
+pipeline.build_pipeline(training_data={
+    'content': your_content_list,
+    'labels': your_labels_list
+})
 
----
+# Process content
+results = pipeline.process_content([
+    {'content_id': '1', 'content': 'some text to analyze'},
+    {'content_id': '2', 'content': 'more text to analyze'}
+])
+```
+
+### Loading Existing Model
+
+```python
+pipeline = ContentSafetyPipeline()
+pipeline.build_pipeline(model_version='path_to_model')
+```
+
+## 📊 Model Details
+
+The content safety model uses the following features:
+- TF-IDF vectorization with n-grams (1-2)
+- Content length
+- Word count
+- Custom text preprocessing
+
+### Priority Levels
+
+Content is classified into three priority levels:
+- **High**: Harmful content with confidence > 0.8
+- **Medium**: Harmful content or confidence > 0.6
+- **Low**: All other content
+
+## 🔧 Configuration
+
+The model can be configured through the `model_config` parameter:
+
+```python
+model_config = {
+    'objective': 'binary:logistic',
+    'n_estimators': 100,
+    'max_depth': 5,
+    'learning_rate': 0.1,
+    'subsample': 0.8,
+    'colsample_bytree': 0.8,
+    'random_state': 42
+}
+```
+
+## 📈 Performance Metrics
+
+The model provides the following metrics:
+- Accuracy
+- Precision
+- Recall
+- F1 Score
+- Confusion Matrix
+
+## 🔍 Monitoring
+
+The pipeline includes built-in monitoring with detailed logging:
+- Content ID tracking
+- Harmful content detection
+- Confidence scores
+- Severity scores
 
 ## 🤝 Contributing
 
-We welcome:
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-* LLM safety researchers
-* UX designers for safety dashboards
-* Community moderation insights
-* Testers for diverse gender-based use cases
+## 📝 License
 
----
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📢 Join the Movement
+## 👥 Authors
 
-If you're passionate about making **LinkedIn and professional spaces safer for women**, let’s connect. This is more than code – it’s a mission.
+- Your Name - Initial work
 
-📬 Email: \[[youremail@example.com](mailto:youremail@example.com)]
-🌐 GitHub: \[github.com/yourusername/linkedin-safety-ai]
-📣 LinkedIn: \[Your LinkedIn Profile]
+## 🙏 Acknowledgments
 
----
-
-**Let’s build a future where professionalism includes safety, dignity, and respect – for everyone.**
+- LinkedIn for the inspiration
+- XGBoost team for the amazing library
+- scikit-learn team for the machine learning tools
